@@ -5,7 +5,9 @@ foreach (case_file ${test_cases})
 
     add_executable(${case_name} ${case_file})
 
-    target_link_libraries(${case_name} ${LINK_LIBS} gtest gtest_main gmock gmock_main pthread) #${PROJECT_NAME}
+    target_link_libraries(${case_name} ${LINK_LIBS}
+            calc-eme token
+            gtest gtest_main gmock gmock_main pthread)
 
     add_test(NAME ${case_name}
             COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${case_name}

@@ -19,5 +19,33 @@ include_directories(thirdparty/googletest/googlemock/include)
 
 add_subdirectory(tests)
 
-add_executable(evaluate-mathematical-expression main.cpp)
-target_link_libraries(evaluate-mathematical-expression gtest gtest_main gmock gmock_main)
+add_library(token STATIC
+        lib/eme/token.h lib/eme/token.cpp
+        lib/eme/token_sequence.h lib/eme/token_sequence.cpp)
+
+add_library(calc-eme STATIC
+        lib/eme/i_expression.h lib/eme/i_expression.cpp
+
+        lib/eme/empty.h lib/eme/empty.cpp
+        lib/eme/number.h lib/eme/number.cpp
+
+        lib/eme/a_operator.h lib/eme/a_operator.cpp
+
+        lib/eme/a_unary_operator.h lib/eme/a_unary_operator.cpp
+        lib/eme/negative.h lib/eme/negative.cpp
+
+        lib/eme/a_binary_operator.h lib/eme/a_binary_operator.cpp
+        lib/eme/subtract.h lib/eme/subtract.cpp
+        lib/eme/addition.h lib/eme/addition.cpp
+        lib/eme/divide.h lib/eme/divide.cpp
+        lib/eme/multiply.h lib/eme/multiply.cpp
+
+        lib/eme/scope.h lib/eme/scope.cpp
+
+        lib/eme/mathematical_expression.h lib/eme/mathematical_expression.cpp)
+
+add_executable(evaluate-mathematical-expression main.cpp lib/calc.hpp)
+
+target_link_libraries(evaluate-mathematical-expression
+        calc-eme token
+        gtest gtest_main gmock gmock_main)

@@ -1,8 +1,21 @@
 #include <cstdlib>
 #include <iostream>
+#include <string>
+#include <vector>
+
+#include "calc.hpp"
 
 
 int main() {
-    std::cout << "Main" << std::endl;
+    std::vector<std::string> ex {
+            { "1 + 1" },
+            { "3 -(-1)" },
+            { "-7 * -(6 / 3)" },
+    };
+
+    for (const auto& e : ex) {
+        std::cout << e << " = " << reclue::calc(e) << std::endl;
+    }
+
     return EXIT_SUCCESS;
 }
