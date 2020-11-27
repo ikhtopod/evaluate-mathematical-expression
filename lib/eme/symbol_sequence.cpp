@@ -3,7 +3,9 @@
 
 namespace reclue {
 
-    bool SymbolSequence::HasNext() const { return m_position < m_sequence.size(); }
+    bool SymbolSequence::HasNext() const {
+        return !m_sequence.empty() && m_position < m_sequence.size();
+    }
 
     bool SymbolSequence::SkipIncorrectSymbols() {
         for (;; ++m_position) {
