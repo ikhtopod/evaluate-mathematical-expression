@@ -11,17 +11,17 @@ namespace reclue {
     AUnaryOperator::AUnaryOperator() : m_expression {} {}
     AUnaryOperator::~AUnaryOperator() { delete m_expression; }
 
-    void AUnaryOperator::Interpret(TokenSequence& tokenSequence) {
-        if (tokenSequence.GetToken().IsUnaryOperator(tokenSequence.GetPrevToken())) {
-            tokenSequence.Shift();
+    void AUnaryOperator::Interpret(SymbolSequence& symbolSequence) {
+        if (symbolSequence.GetSymbol().IsUnaryOperator(symbolSequence.GetPrevSymbol())) {
+            symbolSequence.Shift();
         }
 
-        Token token = tokenSequence.GetToken();
+        Symbol token = symbolSequence.GetSymbol();
 
         if (token.IsCorrect()) {
             if (token.IsNumber()) {
                 m_expression = new Number {};
-            } else if (token.IsUnaryOperator(tokenSequence.GetPrevToken())) {
+            } else if (token.IsUnaryOperator(symbolSequence.GetPrevSymbol())) {
                 if (token.IsNegative()) {
                     m_expression = new Negative {};
                 }
@@ -34,7 +34,7 @@ namespace reclue {
             m_expression = new Empty {};
         }
 
-        m_expression->Interpret(tokenSequence);
+        m_expression->Interpret(symbolSequence);
     }
 
 }

@@ -2,7 +2,7 @@
 #define EVALUATE_MATHEMATICAL_EXPRESSION_A_BINARY_OPERATOR_H
 
 #include "a_operator.h"
-#include "token_sequence.h"
+#include "symbol_sequence.h"
 
 
 namespace reclue {
@@ -16,7 +16,7 @@ namespace reclue {
         explicit ABinaryOperator(IExpression* first);
         ~ABinaryOperator() override;
 
-        void Interpret(TokenSequence& tokenSequence) override;
+        void Interpret(SymbolSequence& symbolSequence) override;
     };
 
 }

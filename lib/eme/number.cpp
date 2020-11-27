@@ -3,12 +3,12 @@
 
 namespace reclue {
 
-    void Number::Interpret(TokenSequence& tokenSequence) {
+    void Number::Interpret(SymbolSequence& symbolSequence) {
         std::string number {};
 
-        for (Token token = tokenSequence.GetToken();
-             (token = tokenSequence.GetToken()).IsNumber();
-             tokenSequence.Shift()) {
+        for (Symbol token = symbolSequence.GetSymbol();
+             (token = symbolSequence.GetSymbol()).IsNumber();
+             symbolSequence.Shift()) {
 
             number.push_back(token.GetSymbol());
         }

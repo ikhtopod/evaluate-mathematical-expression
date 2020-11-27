@@ -2,7 +2,7 @@
 #define EVALUATE_MATHEMATICAL_EXPRESSION_NUMBER_H
 
 #include "i_expression.h"
-#include "token_sequence.h"
+#include "symbol_sequence.h"
 
 
 namespace reclue {
@@ -12,7 +12,7 @@ namespace reclue {
         double m_value {};
 
     public:
-        void Interpret(TokenSequence& tokenSequence) override;
+        void Interpret(SymbolSequence& symbolSequence) override;
         double Calculate() override;
     };
 

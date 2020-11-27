@@ -3,7 +3,7 @@
 
 namespace reclue {
 
-    void Empty::Interpret(TokenSequence&) {}
+    void Empty::Interpret(SymbolSequence&) {}
     double Empty::Calculate() { return 0.0; }
 
 }

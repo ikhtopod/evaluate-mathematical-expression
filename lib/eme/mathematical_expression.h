@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "token_sequence.h"
+#include "symbol_sequence.h"
 #include "scope.h"
 
 
@@ -11,7 +11,7 @@ namespace reclue {
 
     class MathematicalExpression final {
     private:
-        TokenSequence m_tokenSequence;
+        SymbolSequence m_symbolSequence;
         Scope* m_scope;
         double m_result;
 

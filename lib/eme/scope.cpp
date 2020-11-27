@@ -14,12 +14,12 @@ namespace reclue {
     Scope::Scope() : m_expression {} {}
     Scope::~Scope() { delete m_expression; }
 
-    void Scope::Interpret(TokenSequence& tokenSequence) {
-        if (tokenSequence.GetToken().IsBeginScope()) {
-            tokenSequence.Shift();
+    void Scope::Interpret(SymbolSequence& symbolSequence) {
+        if (symbolSequence.GetSymbol().IsBeginScope()) {
+            symbolSequence.Shift();
         }
 
-        Token token = tokenSequence.GetToken();
+        Symbol token = symbolSequence.GetSymbol();
 
         IExpression* prevExpression = nullptr;
 
@@ -28,11 +28,11 @@ namespace reclue {
 
             if (token.IsNumber()) {
                 m_expression = new Number {};
-            } else if (token.IsUnaryOperator(tokenSequence.GetPrevToken())) {
+            } else if (token.IsUnaryOperator(symbolSequence.GetPrevSymbol())) {
                 if (token.IsNegative()) {
                     m_expression = new Negative {};
                 }
-            } else if (token.IsBinaryOperator(tokenSequence.GetPrevToken())) {
+            } else if (token.IsBinaryOperator(symbolSequence.GetPrevSymbol())) {
                 if (token.IsSubtract()) {
                     m_expression = new Subtract { prevExpression };
                 } else if (token.IsAddition()) {
@@ -53,9 +53,9 @@ namespace reclue {
                 m_expression = new Empty {};
             }
 
-            m_expression->Interpret(tokenSequence);
-            tokenSequence.Shift();
-            token = tokenSequence.GetToken();
+            m_expression->Interpret(symbolSequence);
+            symbolSequence.Shift();
+            token = symbolSequence.GetSymbol();
         }
         if (!m_expression) {
             m_expression = new Empty {};

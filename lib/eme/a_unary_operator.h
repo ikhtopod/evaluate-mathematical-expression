@@ -2,7 +2,7 @@
 #define EVALUATE_MATHEMATICAL_EXPRESSION_A_UNARY_OPERATOR_H
 
 #include "a_operator.h"
-#include "token_sequence.h"
+#include "symbol_sequence.h"
 
 
 namespace reclue {
@@ -15,7 +15,7 @@ namespace reclue {
         AUnaryOperator();
         ~AUnaryOperator() override;
 
-        void Interpret(TokenSequence& tokenSequence) override;
+        void Interpret(SymbolSequence& symbolSequence) override;
     };
 
 }

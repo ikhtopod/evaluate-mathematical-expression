@@ -14,17 +14,17 @@ namespace reclue {
         delete m_first;
     }
 
-    void ABinaryOperator::Interpret(TokenSequence& tokenSequence) {
-        if (tokenSequence.GetToken().IsBinaryOperator(tokenSequence.GetPrevToken())) {
-            tokenSequence.Shift();
+    void ABinaryOperator::Interpret(SymbolSequence& symbolSequence) {
+        if (symbolSequence.GetSymbol().IsBinaryOperator(symbolSequence.GetPrevSymbol())) {
+            symbolSequence.Shift();
         }
 
-        Token token = tokenSequence.GetToken();
+        Symbol token = symbolSequence.GetSymbol();
 
         if (token.IsCorrect()) {
             if (token.IsNumber()) {
                 m_second = new Number {};
-            } else if (token.IsUnaryOperator(tokenSequence.GetPrevToken())) {
+            } else if (token.IsUnaryOperator(symbolSequence.GetPrevSymbol())) {
                 if (token.IsNegative()) {
                     m_second = new Negative {};
                 }
@@ -33,7 +33,7 @@ namespace reclue {
             }
         }
 
-        m_second->Interpret(tokenSequence);
+        m_second->Interpret(symbolSequence);
     }
 
 

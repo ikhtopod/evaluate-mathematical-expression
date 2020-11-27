@@ -6,7 +6,7 @@ foreach (case_file ${test_cases})
     add_executable(${case_name} ${case_file})
 
     target_link_libraries(${case_name} ${LINK_LIBS}
-            calc-eme token
+            calc-eme symbol
             gtest gtest_main gmock gmock_main pthread)
 
     add_test(NAME ${case_name}

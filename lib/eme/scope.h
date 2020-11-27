@@ -1,7 +1,7 @@
 #ifndef EVALUATE_MATHEMATICAL_EXPRESSION_SCOPE_H
 #define EVALUATE_MATHEMATICAL_EXPRESSION_SCOPE_H
 
-#include "token_sequence.h"
+#include "symbol_sequence.h"
 #include "a_operator.h"
 
 
@@ -15,7 +15,7 @@ namespace reclue {
         Scope();
         ~Scope() override;
 
-        void Interpret(TokenSequence& tokenSequence) override;
+        void Interpret(SymbolSequence& symbolSequence) override;
         double Calculate() override;
     };
 

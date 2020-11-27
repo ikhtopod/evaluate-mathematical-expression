@@ -19,9 +19,9 @@ include_directories(thirdparty/googletest/googlemock/include)
 
 add_subdirectory(tests)
 
-add_library(token STATIC
-        lib/eme/token.h lib/eme/token.cpp
-        lib/eme/token_sequence.h lib/eme/token_sequence.cpp)
+add_library(symbol STATIC
+        lib/eme/symbol.h lib/eme/symbol.cpp
+        lib/eme/symbol_sequence.h lib/eme/symbol_sequence.cpp)
 
 add_library(calc-eme STATIC
         lib/eme/i_expression.h lib/eme/i_expression.cpp
@@ -47,5 +47,5 @@ add_library(calc-eme STATIC
 add_executable(evaluate-mathematical-expression main.cpp lib/calc.hpp)
 
 target_link_libraries(evaluate-mathematical-expression
-        calc-eme token
+        calc-eme symbol
         gtest gtest_main gmock gmock_main)
