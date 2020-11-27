@@ -5,24 +5,6 @@
 using reclue::calc;
 
 
-TEST(calc, NoFatalFailure) {
-    ASSERT_NO_FATAL_FAILURE(calc(""));
-    ASSERT_NO_FATAL_FAILURE(calc(" ( ( ) ) "));
-
-    ASSERT_NO_FATAL_FAILURE(calc("10 * ("));
-    ASSERT_NO_FATAL_FAILURE(calc(") * 10"));
-    ASSERT_NO_FATAL_FAILURE(calc(" ( 10 *  ) ) "));
-
-    ASSERT_NO_FATAL_FAILURE(calc("10 * ()"));
-    ASSERT_NO_FATAL_FAILURE(calc("() * 10"));
-    ASSERT_NO_FATAL_FAILURE(calc(" ( 10 * ( ) ) "));
-
-    ASSERT_NO_FATAL_FAILURE(calc("(2 / (2 + 3.33) * 4) - -6"));
-    ASSERT_NO_FATAL_FAILURE(calc("−(2.3) + −7 − (−2) * −(6 / 3)"));
-    ASSERT_NO_FATAL_FAILURE(calc("(−(2.3) + −7 − (−2)) * −(6 / 3)"));
-    ASSERT_NO_FATAL_FAILURE(calc("−(2.3) + (−7 − (−2)) * −(6 / 3)"));
-}
-
 TEST(calc, Empty) {
     ASSERT_DOUBLE_EQ(0.0, calc(""));
     ASSERT_DOUBLE_EQ(0.0, calc(" "));
@@ -60,9 +42,9 @@ TEST(calc, Standard) {
 }
 
 TEST(calc, SplitComplexExample) {
-    ASSERT_DOUBLE_EQ(-23.0, calc("-(23)"));
     ASSERT_DOUBLE_EQ(-7.0, calc("-7"));
     ASSERT_DOUBLE_EQ(-2.0, calc("(-2)"));
+    ASSERT_DOUBLE_EQ(-23.0, calc("-(23)"));
     ASSERT_DOUBLE_EQ(2.0, calc("6 / 3"));
     ASSERT_DOUBLE_EQ(-2.0, calc("-(6 / 3)"));
     ASSERT_DOUBLE_EQ(4.0, calc("(−2) * −(6 / 3)"));
