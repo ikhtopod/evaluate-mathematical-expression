@@ -1,13 +1,15 @@
 #ifndef EVALUATE_MATHEMATICAL_EXPRESSION_EMPTY_H
 #define EVALUATE_MATHEMATICAL_EXPRESSION_EMPTY_H
 
-#include "i_expression.h"
+#include "a_expression.h"
 #include "symbol_sequence.h"
 
 
 namespace reclue {
 
-    struct Empty : public IExpression {
+    struct Empty : public AExpression {
+        using AExpression::AExpression;
+
         void Interpret(SymbolSequence&) override;
         double Calculate() override;
     };

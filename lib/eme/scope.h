@@ -9,11 +9,13 @@ namespace reclue {
 
     class Scope : public AOperator {
     private:
-        IExpression* m_expression;
+        AExpression* m_expression;
 
     public:
-        Scope();
-        ~Scope() override;
+        using AOperator::AOperator;
+
+        explicit Scope(AExpression* ancestor);
+        ~Scope();
 
         void Interpret(SymbolSequence& symbolSequence) override;
         double Calculate() override;

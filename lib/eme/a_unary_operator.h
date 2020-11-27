@@ -9,11 +9,13 @@ namespace reclue {
 
     class AUnaryOperator : public AOperator {
     protected:
-        IExpression* m_expression;
+        AExpression* m_expression;
 
     public:
-        AUnaryOperator();
-        ~AUnaryOperator() override;
+        using AOperator::AOperator;
+
+        explicit AUnaryOperator(AExpression* ancestor);
+        ~AUnaryOperator();
 
         void Interpret(SymbolSequence& symbolSequence) override;
     };

@@ -9,14 +9,16 @@ namespace reclue {
 
     class ABinaryOperator : public AOperator {
     protected:
-        IExpression* m_first;
-        IExpression* m_second;
+        AExpression* m_first;
+        AExpression* m_second;
 
     public:
-        ABinaryOperator();
-        ~ABinaryOperator() override;
+        using AOperator::AOperator;
 
-        void SetFirst(IExpression* first);
+        explicit ABinaryOperator(AExpression* ancestor);
+        ~ABinaryOperator();
+
+        void SetFirst(AExpression* first);
         void Interpret(SymbolSequence& symbolSequence) override;
     };
 

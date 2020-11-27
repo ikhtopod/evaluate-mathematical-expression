@@ -7,6 +7,8 @@
 namespace reclue {
 
     struct Negative : public AUnaryOperator {
+        using AUnaryOperator::AUnaryOperator;
+
         double Calculate() override;
     };
 

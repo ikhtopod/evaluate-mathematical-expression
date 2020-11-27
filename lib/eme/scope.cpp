@@ -11,7 +11,8 @@
 
 namespace reclue {
 
-    Scope::Scope() : m_expression {} {}
+    Scope::Scope(AExpression* ancestor) : AOperator { ancestor }, m_expression {} {}
+
     Scope::~Scope() { delete m_expression; }
 
     void Scope::Interpret(SymbolSequence& symbolSequence) {
@@ -21,31 +22,31 @@ namespace reclue {
 
         Symbol symbol = symbolSequence.GetSymbol();
 
-        IExpression* prevExpression { nullptr };
+        // AExpression* prevExpression { nullptr };
         while (!symbol.IsDeadEnd()) {
-            prevExpression = m_expression;
+            // prevExpression = m_expression;
 
             if (symbol.IsNumber()) {
-                m_expression = new Number {};
+                m_expression = new Number { this };
             } else if (symbol.IsUnaryOperator(symbolSequence.GetPrevSymbol())) {
                 if (symbol.IsNegative()) {
-                    m_expression = new Negative {};
+                    m_expression = new Negative { this };
                 }
             } else if (symbol.IsBinaryOperator(symbolSequence.GetPrevSymbol())) {
                 ABinaryOperator* binaryOperator { nullptr };
 
                 if (symbol.IsSubtract()) {
-                    binaryOperator = new Subtract {};
+                    binaryOperator = new Subtract { this };
                 } else if (symbol.IsAddition()) {
-                    binaryOperator = new Addition {};
+                    binaryOperator = new Addition { this };
                 } else if (symbol.IsDivide()) {
-                    binaryOperator = new Divide {};
+                    binaryOperator = new Divide { this };
                 } else if (symbol.IsMultiply()) {
-                    binaryOperator = new Multiply {};
+                    binaryOperator = new Multiply { this };
                 }
 
                 if (binaryOperator) {
-                    binaryOperator->SetFirst(prevExpression);
+                    //binaryOperator->SetFirst(prevExpression);
                     m_expression = binaryOperator;
                 }
             } else if (symbol.IsBeginScope()) {
@@ -53,10 +54,10 @@ namespace reclue {
                     symbolSequence.Shift();
                 }
 
-                m_expression = new Scope {};
+                m_expression = new Scope { this };
             } else if (symbol.IsEndScope()) {
                 if (!m_expression) {
-                    m_expression = new Empty {};
+                    m_expression = new Empty { this };
                 }
                 return;
             }
@@ -65,7 +66,7 @@ namespace reclue {
                 m_expression->Interpret(symbolSequence);
                 symbol = symbolSequence.GetSymbol();
             } else {
-                m_expression = new Empty {};
+                m_expression = new Empty { this };
             }
 
             if (symbol.IsEndScope()) {
@@ -74,7 +75,7 @@ namespace reclue {
         }
 
         if (!m_expression) {
-            m_expression = new Empty {};
+            m_expression = new Empty { this };
         }
 
         if (symbol.IsEndScope()) {

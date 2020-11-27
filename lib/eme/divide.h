@@ -7,6 +7,8 @@
 namespace reclue {
 
     struct Divide : public ABinaryOperator {
+        using ABinaryOperator::ABinaryOperator;
+
         double Calculate() override;
     };
 

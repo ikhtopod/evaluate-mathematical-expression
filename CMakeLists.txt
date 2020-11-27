@@ -24,7 +24,7 @@ add_library(symbol STATIC
         lib/eme/symbol_sequence.h lib/eme/symbol_sequence.cpp)
 
 add_library(calc-eme STATIC
-        lib/eme/i_expression.h lib/eme/i_expression.cpp
+        lib/eme/a_expression.h lib/eme/a_expression.cpp
 
         lib/eme/empty.h lib/eme/empty.cpp
         lib/eme/number.h lib/eme/number.cpp
