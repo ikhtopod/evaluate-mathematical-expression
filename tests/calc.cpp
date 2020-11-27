@@ -1,8 +1,6 @@
 #include <gtest/gtest.h>
 #include "calc.hpp"
 
-#include <ratio>
-
 
 using reclue::calc;
 
@@ -39,6 +37,11 @@ TEST(calc, Empty) {
     ASSERT_DOUBLE_EQ(0.0, calc("( () ) "));
     ASSERT_DOUBLE_EQ(0.0, calc(" ( () ) "));
     ASSERT_DOUBLE_EQ(0.0, calc(" ( ( ) ) "));
+    ASSERT_DOUBLE_EQ(0.0, calc("*"));
+    ASSERT_DOUBLE_EQ(0.0, calc(" -"));
+    ASSERT_DOUBLE_EQ(0.0, calc("+ "));
+    ASSERT_DOUBLE_EQ(0.0, calc(" / "));
+    ASSERT_DOUBLE_EQ(0.0, calc("() * "));
 }
 
 TEST(calc, Zero) {
@@ -49,6 +52,33 @@ TEST(calc, Zero) {
     ASSERT_DOUBLE_EQ(0.0, calc("10 * ()"));
     ASSERT_DOUBLE_EQ(0.0, calc("() * 10"));
     ASSERT_DOUBLE_EQ(0.0, calc(" ( 10 * ( ) ) "));
+}
+
+TEST(calc, UnaryOperator) {
+    ASSERT_DOUBLE_EQ(-5.0, calc("-5"));
+    ASSERT_DOUBLE_EQ(-10.0, calc("-5 -5"));
+    ASSERT_DOUBLE_EQ(-15.0, calc("-5 -5 -5"));
+    ASSERT_DOUBLE_EQ(-15.0, calc("-5 -5 + -5"));
+    ASSERT_DOUBLE_EQ(-15.0, calc("-5 + -5 + -5"));
+    ASSERT_DOUBLE_EQ(-15.0, calc("(-5 + -5) + -5"));
+    ASSERT_DOUBLE_EQ(-15.0, calc("-5 + (-5 + -5)"));
+    ASSERT_DOUBLE_EQ(-15.0, calc("-5 + -(5 - -5)"));
+    ASSERT_DOUBLE_EQ(-5.0, calc("-5 + -(5 + -5)"));
+    ASSERT_DOUBLE_EQ(0.0, calc("-5 --------5"));
+}
+
+TEST(calc, DivideByZero) {
+    ASSERT_DOUBLE_EQ(0.0, calc(" / "));
+    ASSERT_DOUBLE_EQ(0.0, calc("2 / 0.0"));
+    ASSERT_DOUBLE_EQ(0.0, calc("2 / (3.0 - 3)"));
+    ASSERT_DOUBLE_EQ(0.0, calc("2 / (-5 -5)"));
+    ASSERT_DOUBLE_EQ(0.0, calc("2 / (-5 + -5)"));
+    ASSERT_DOUBLE_EQ(0.0, calc("2 / (-5 + --5)"));
+}
+
+TEST(calc, DivideBySmallNumber) {
+    ASSERT_DOUBLE_EQ(20.0, calc("2 / 0.1"));
+    ASSERT_DOUBLE_EQ(20'000.0, calc("2 / 0.0001"));
 }
 
 TEST(calc, Standard) {
@@ -92,17 +122,19 @@ TEST(calc, SplitComplexExample) {
     ASSERT_DOUBLE_EQ(-30.0, calc("-(23) + -7"));
     ASSERT_DOUBLE_EQ(-5.0, calc("-7 - (-2)"));
     ASSERT_DOUBLE_EQ(-28.0, calc("-(23) + -7 - (-2)"));
-    //ASSERT_DOUBLE_EQ(4.0, calc("(-2) * -(6 / 3)"));
+    ASSERT_DOUBLE_EQ(4.0, calc("(-2) * -(6 / 3)"));
+
     //ASSERT_DOUBLE_EQ(-11.0, calc("-7 - (-2) * -(6 / 3)"));
     //ASSERT_DOUBLE_EQ(-34.0, calc("-(23) + -7 - (-2) * -(6 / 3)"));
 }
 
-/*TEST(calc, ComplexExamples) {
-    ASSERT_DOUBLE_EQ(-13.3, calc("-(2.3) + -7 - (-2) * -(6 / 3)"));
-    ASSERT_DOUBLE_EQ(14.6, calc("(-(2.3) + -7 - (-2)) * -(6 / 3)"));
-    ASSERT_DOUBLE_EQ(7.7, calc("-(2.3) + (-7 - (-2)) * -(6 / 3)"));
-    ASSERT_DOUBLE_EQ(7.500938086, calc("(2 / (2 + 3.33) * 4) - -6"));
-}*/
+TEST(calc, ComplexExamples) {
+    ASSERT_DOUBLE_EQ(((2.0 / (2.0 + 3.33) * 4.0) - -6.0), calc("(2 / (2 + 3.33) * 4) - -6"));
+
+    //ASSERT_DOUBLE_EQ(-13.3, calc("-(2.3) + -7 - (-2) * -(6 / 3)"));
+    //ASSERT_DOUBLE_EQ(14.6, calc("(-(2.3) + -7 - (-2)) * -(6 / 3)"));
+    //ASSERT_DOUBLE_EQ(7.7, calc("-(2.3) + (-7 - (-2)) * -(6 / 3)"));
+}
 
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
