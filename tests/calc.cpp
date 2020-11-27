@@ -29,6 +29,8 @@ TEST(calc, Standard) {
     ASSERT_DOUBLE_EQ(15.0, calc("3 * 5"));
     ASSERT_DOUBLE_EQ(14.0, calc("-7 * -(6 / 3)"));
     ASSERT_DOUBLE_EQ(7.500938086, calc("(2 / (2 + 3.33) * 4) - -6"));
+    ASSERT_DOUBLE_EQ(-34.0, calc("−(23) + −7 − (−2) * −(6 / 3)"));
+    ASSERT_DOUBLE_EQ(-13.3, calc("−(2.3) + −7 − (−2) * −(6 / 3)"));
 }
 
 int main(int argc, char** argv) {
