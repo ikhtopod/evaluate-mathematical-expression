@@ -19,10 +19,13 @@ namespace reclue {
 
         if (symbol.IsBeginScope()) {
             symbolSequence.Shift();
+            symbol = symbolSequence.GetSymbol();
         }
 
         IExpression* prevExpression = nullptr;
         while (!symbol.IsDeadEnd()) {
+            prevExpression = m_expression;
+
             if (symbol.IsNumber()) {
                 m_expression = new Number {};
             } else if (symbol.IsUnaryOperator(symbolSequence.GetPrevSymbol())) {
@@ -54,14 +57,12 @@ namespace reclue {
                 return;
             }
 
-            prevExpression = m_expression;
-
             if (m_expression) {
                 m_expression->Interpret(symbolSequence);
-                //symbolSequence.Shift();
                 symbol = symbolSequence.GetSymbol();
             } else {
                 m_expression = new Empty {};
+                symbolSequence.Shift();
             }
         }
 

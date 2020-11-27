@@ -24,6 +24,7 @@ namespace reclue {
 
         if (symbol.IsBinaryOperator(symbolSequence.GetPrevSymbol())) {
             symbolSequence.Shift();
+            symbol = symbolSequence.GetSymbol();
         }
 
         if (!symbol.IsDeadEnd()) {

@@ -16,6 +16,7 @@ namespace reclue {
 
         if (symbol.IsUnaryOperator(symbolSequence.GetPrevSymbol())) {
             symbolSequence.Shift();
+            symbol = symbolSequence.GetSymbol();
         }
 
         if (!symbol.IsDeadEnd()) {
