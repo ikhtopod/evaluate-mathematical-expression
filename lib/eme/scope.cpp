@@ -23,7 +23,7 @@ namespace reclue {
 
         IExpression* prevExpression = nullptr;
 
-        while (symbol.IsCorrect()) {
+        while (!symbol.IsDeadEnd()) {
             prevExpression = m_expression;
 
             if (symbol.IsNumber()) {
@@ -64,6 +64,7 @@ namespace reclue {
             symbolSequence.Shift();
             symbol = symbolSequence.GetSymbol();
         }
+
         if (!m_expression) {
             m_expression = new Empty {};
         }

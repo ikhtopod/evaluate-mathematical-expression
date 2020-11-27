@@ -18,7 +18,7 @@ namespace reclue {
 
         Symbol symbol = symbolSequence.GetSymbol();
 
-        if (symbol.IsCorrect()) {
+        if (!symbol.IsDeadEnd()) {
             if (symbol.IsNumber()) {
                 m_expression = new Number {};
             } else if (symbol.IsUnaryOperator(symbolSequence.GetPrevSymbol())) {

@@ -22,6 +22,8 @@ namespace reclue {
         char GetSymbol() const;
 
     public:
+        bool IsDeadEnd() const;
+
         bool IsDigit() const;
         bool IsNumberSeparator() const;
         bool IsNumber() const;
@@ -44,6 +46,5 @@ namespace reclue {
     };
 
 }
-
 
 #endif //EVALUATE_MATHEMATICAL_EXPRESSION_SYMBOL_H

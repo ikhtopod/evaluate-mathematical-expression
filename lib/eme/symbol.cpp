@@ -28,10 +28,12 @@ namespace reclue {
     char Symbol::GetSymbol() const { return m_symbol; }
 
     /* Symbol info */
+    bool Symbol::IsDeadEnd() const { return m_symbol == '\0'; }
+
     bool Symbol::IsDigit() const { return std::isdigit(m_symbol); }
     bool Symbol::IsNumberSeparator() const { return m_symbol == '.'; }
-    bool Symbol::IsNumber() const { return IsDigit() || IsNumberSeparator(); }
 
+    bool Symbol::IsNumber() const { return IsDigit() || IsNumberSeparator(); }
     bool Symbol::IsBeginScope() const { return m_symbol == '('; }
     bool Symbol::IsEndScope() const { return m_symbol == ')'; }
 

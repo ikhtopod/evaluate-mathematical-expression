@@ -21,5 +21,4 @@ namespace reclue {
 
 }
 
-
 #endif //EVALUATE_MATHEMATICAL_EXPRESSION_SCOPE_H

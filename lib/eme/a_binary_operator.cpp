@@ -1,5 +1,6 @@
 #include "a_binary_operator.h"
 
+#include "empty.h"
 #include "number.h"
 #include "negative.h"
 #include "scope.h"
@@ -23,7 +24,7 @@ namespace reclue {
 
         Symbol symbol = symbolSequence.GetSymbol();
 
-        if (symbol.IsCorrect()) {
+        if (!symbol.IsDeadEnd()) {
             if (symbol.IsNumber()) {
                 m_second = new Number {};
             } else if (symbol.IsUnaryOperator(symbolSequence.GetPrevSymbol())) {
@@ -35,8 +36,11 @@ namespace reclue {
             }
         }
 
+        if (!m_second) {
+            m_second = new Empty {};
+        }
+
         m_second->Interpret(symbolSequence);
     }
-
 
 }
