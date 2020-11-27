@@ -13,9 +13,10 @@ namespace reclue {
         IExpression* m_second;
 
     public:
-        explicit ABinaryOperator(IExpression* first);
+        ABinaryOperator();
         ~ABinaryOperator() override;
 
+        void SetFirst(IExpression* first);
         void Interpret(SymbolSequence& symbolSequence) override;
     };
 

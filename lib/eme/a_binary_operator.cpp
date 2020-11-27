@@ -7,13 +7,14 @@
 
 namespace reclue {
 
-    ABinaryOperator::ABinaryOperator(IExpression* first) :
-            m_first { first }, m_second {} {}
+    ABinaryOperator::ABinaryOperator() : m_first {}, m_second {} {}
 
     ABinaryOperator::~ABinaryOperator() {
         delete m_second;
         delete m_first;
     }
+
+    void ABinaryOperator::SetFirst(IExpression* first) { m_first = first; }
 
     void ABinaryOperator::Interpret(SymbolSequence& symbolSequence) {
         if (symbolSequence.GetSymbol().IsBinaryOperator(symbolSequence.GetPrevSymbol())) {

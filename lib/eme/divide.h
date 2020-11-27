@@ -7,7 +7,6 @@
 namespace reclue {
 
     struct Divide : public ABinaryOperator {
-        explicit Divide(IExpression* first);
         double Calculate() override;
     };
 

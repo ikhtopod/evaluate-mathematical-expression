@@ -33,14 +33,21 @@ namespace reclue {
                     m_expression = new Negative {};
                 }
             } else if (symbol.IsBinaryOperator(symbolSequence.GetPrevSymbol())) {
+                ABinaryOperator* binaryOperator { nullptr };
+
                 if (symbol.IsSubtract()) {
-                    m_expression = new Subtract { prevExpression };
+                    binaryOperator = new Subtract {};
                 } else if (symbol.IsAddition()) {
-                    m_expression = new Addition { prevExpression };
+                    binaryOperator = new Addition {};
                 } else if (symbol.IsDivide()) {
-                    m_expression = new Divide { prevExpression };
+                    binaryOperator = new Divide {};
                 } else if (symbol.IsMultiply()) {
-                    m_expression = new Multiply { prevExpression };
+                    binaryOperator = new Multiply {};
+                }
+
+                if (binaryOperator) {
+                    binaryOperator->SetFirst(prevExpression);
+                    m_expression = binaryOperator;
                 }
             } else if (symbol.IsBeginScope()) {
                 m_expression = new Scope {};

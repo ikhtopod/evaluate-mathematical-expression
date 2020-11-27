@@ -7,7 +7,6 @@
 namespace reclue {
 
     struct Addition : public ABinaryOperator {
-        explicit Addition(IExpression* first);
         double Calculate() override;
     };
 
