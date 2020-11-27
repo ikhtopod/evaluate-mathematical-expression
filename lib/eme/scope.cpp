@@ -19,32 +19,32 @@ namespace reclue {
             symbolSequence.Shift();
         }
 
-        Symbol token = symbolSequence.GetSymbol();
+        Symbol symbol = symbolSequence.GetSymbol();
 
         IExpression* prevExpression = nullptr;
 
-        while (token.IsCorrect()) {
+        while (symbol.IsCorrect()) {
             prevExpression = m_expression;
 
-            if (token.IsNumber()) {
+            if (symbol.IsNumber()) {
                 m_expression = new Number {};
-            } else if (token.IsUnaryOperator(symbolSequence.GetPrevSymbol())) {
-                if (token.IsNegative()) {
+            } else if (symbol.IsUnaryOperator(symbolSequence.GetPrevSymbol())) {
+                if (symbol.IsNegative()) {
                     m_expression = new Negative {};
                 }
-            } else if (token.IsBinaryOperator(symbolSequence.GetPrevSymbol())) {
-                if (token.IsSubtract()) {
+            } else if (symbol.IsBinaryOperator(symbolSequence.GetPrevSymbol())) {
+                if (symbol.IsSubtract()) {
                     m_expression = new Subtract { prevExpression };
-                } else if (token.IsAddition()) {
+                } else if (symbol.IsAddition()) {
                     m_expression = new Addition { prevExpression };
-                } else if (token.IsDivide()) {
+                } else if (symbol.IsDivide()) {
                     m_expression = new Divide { prevExpression };
-                } else if (token.IsMultiply()) {
+                } else if (symbol.IsMultiply()) {
                     m_expression = new Multiply { prevExpression };
                 }
-            } else if (token.IsBeginScope()) {
+            } else if (symbol.IsBeginScope()) {
                 m_expression = new Scope {};
-            } else if (token.IsEndScope()) {
+            } else if (symbol.IsEndScope()) {
                 m_expression = new Empty {};
                 return;
             }
@@ -55,7 +55,7 @@ namespace reclue {
 
             m_expression->Interpret(symbolSequence);
             symbolSequence.Shift();
-            token = symbolSequence.GetSymbol();
+            symbol = symbolSequence.GetSymbol();
         }
         if (!m_expression) {
             m_expression = new Empty {};

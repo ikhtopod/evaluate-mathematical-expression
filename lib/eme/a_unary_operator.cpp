@@ -16,16 +16,16 @@ namespace reclue {
             symbolSequence.Shift();
         }
 
-        Symbol token = symbolSequence.GetSymbol();
+        Symbol symbol = symbolSequence.GetSymbol();
 
-        if (token.IsCorrect()) {
-            if (token.IsNumber()) {
+        if (symbol.IsCorrect()) {
+            if (symbol.IsNumber()) {
                 m_expression = new Number {};
-            } else if (token.IsUnaryOperator(symbolSequence.GetPrevSymbol())) {
-                if (token.IsNegative()) {
+            } else if (symbol.IsUnaryOperator(symbolSequence.GetPrevSymbol())) {
+                if (symbol.IsNegative()) {
                     m_expression = new Negative {};
                 }
-            } else if (token.IsBeginScope()) {
+            } else if (symbol.IsBeginScope()) {
                 m_expression = new Scope {};
             }
         }
