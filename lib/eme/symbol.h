@@ -5,6 +5,9 @@
 namespace reclue {
 
     class Symbol final {
+    public:
+        static constexpr char DEADEND { '\0' };
+
     private:
         char m_symbol;
 

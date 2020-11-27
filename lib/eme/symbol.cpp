@@ -7,7 +7,7 @@ namespace reclue {
 
     Symbol::Symbol(char symbol) : m_symbol { symbol } {}
 
-    Symbol::Symbol() : Symbol { '\0' } {}
+    Symbol::Symbol() : Symbol { Symbol::DEADEND } {}
     Symbol::Symbol(const Symbol& symbol) : m_symbol { symbol.m_symbol } {}
     Symbol::Symbol(Symbol&& symbol) noexcept: m_symbol { symbol.m_symbol } {}
 
@@ -28,7 +28,7 @@ namespace reclue {
     char Symbol::GetSymbol() const { return m_symbol; }
 
     /* Symbol info */
-    bool Symbol::IsDeadEnd() const { return m_symbol == '\0'; }
+    bool Symbol::IsDeadEnd() const { return m_symbol == Symbol::DEADEND; }
 
     bool Symbol::IsDigit() const { return std::isdigit(m_symbol); }
     bool Symbol::IsNumberSeparator() const { return m_symbol == '.'; }
@@ -63,7 +63,7 @@ namespace reclue {
     bool Symbol::IsCorrect() const {
         switch (m_symbol) {
             case ' ':
-            case '\0':
+            case Symbol::DEADEND:
                 return false;
             default:
                 return true;

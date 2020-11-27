@@ -12,11 +12,11 @@ namespace reclue {
     AUnaryOperator::~AUnaryOperator() { delete m_expression; }
 
     void AUnaryOperator::Interpret(SymbolSequence& symbolSequence) {
-        if (symbolSequence.GetSymbol().IsUnaryOperator(symbolSequence.GetPrevSymbol())) {
+        Symbol symbol = symbolSequence.GetSymbol();
+
+        if (symbol.IsUnaryOperator(symbolSequence.GetPrevSymbol())) {
             symbolSequence.Shift();
         }
-
-        Symbol symbol = symbolSequence.GetSymbol();
 
         if (!symbol.IsDeadEnd()) {
             if (symbol.IsNumber()) {
@@ -30,11 +30,12 @@ namespace reclue {
             }
         }
 
-        if (!m_expression) {
+        if (m_expression) {
+            m_expression->Interpret(symbolSequence);
+            symbolSequence.Shift();
+        } else {
             m_expression = new Empty {};
         }
-
-        m_expression->Interpret(symbolSequence);
     }
 
 }

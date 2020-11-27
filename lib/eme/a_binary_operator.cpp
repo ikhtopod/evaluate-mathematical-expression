@@ -15,14 +15,16 @@ namespace reclue {
         delete m_first;
     }
 
-    void ABinaryOperator::SetFirst(IExpression* first) { m_first = first; }
+    void ABinaryOperator::SetFirst(IExpression* first) {
+        m_first = first ? first : new Empty {};
+    }
 
     void ABinaryOperator::Interpret(SymbolSequence& symbolSequence) {
-        if (symbolSequence.GetSymbol().IsBinaryOperator(symbolSequence.GetPrevSymbol())) {
+        Symbol symbol = symbolSequence.GetSymbol();
+
+        if (symbol.IsBinaryOperator(symbolSequence.GetPrevSymbol())) {
             symbolSequence.Shift();
         }
-
-        Symbol symbol = symbolSequence.GetSymbol();
 
         if (!symbol.IsDeadEnd()) {
             if (symbol.IsNumber()) {
@@ -36,11 +38,12 @@ namespace reclue {
             }
         }
 
-        if (!m_second) {
+        if (m_second) {
+            m_second->Interpret(symbolSequence);
+            symbolSequence.Shift();
+        } else {
             m_second = new Empty {};
         }
-
-        m_second->Interpret(symbolSequence);
     }
 
 }

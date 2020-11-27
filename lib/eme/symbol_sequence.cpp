@@ -20,7 +20,7 @@ namespace reclue {
 
     SymbolSequence::SymbolSequence(const std::string_view& expression) :
             m_sequence { expression }, m_position { 0 }, m_prevSymbol {},
-            m_currentSymbol { HasNext() ? m_sequence[m_position] : '\0' } {
+            m_currentSymbol { HasNext() ? m_sequence[m_position] : Symbol::DEADEND } {
         SkipIncorrectSymbols();
     }
 
