@@ -64,6 +64,8 @@ TEST(calc, UnaryOperator) {
     ASSERT_DOUBLE_EQ(-15.0, calc("-5 + (-5 + -5)"));
     ASSERT_DOUBLE_EQ(-15.0, calc("-5 + -(5 - -5)"));
     ASSERT_DOUBLE_EQ(-5.0, calc("-5 + -(5 + -5)"));
+    ASSERT_DOUBLE_EQ(-10.0, calc("-5 -----5"));
+    ASSERT_DOUBLE_EQ(0.0, calc("-5 ------5"));
     ASSERT_DOUBLE_EQ(0.0, calc("-5 --------5"));
 }
 
