@@ -68,7 +68,6 @@ TEST(calc, SplitComplexExample) {
     ASSERT_DOUBLE_EQ(-2.0, calc("-(6 / 3)"));
     ASSERT_DOUBLE_EQ(4.0, calc("(-2) * -(6 / 3)"));
     ASSERT_DOUBLE_EQ(-30.0, calc("-(23) + -7"));
-
     ASSERT_DOUBLE_EQ(-5.0, calc("-7 - (-2)"));
     ASSERT_DOUBLE_EQ(-28.0, calc("-(23) + -7 - (-2)"));
     ASSERT_DOUBLE_EQ(-11.0, calc("-7 - (-2) * -(6 / 3)"));

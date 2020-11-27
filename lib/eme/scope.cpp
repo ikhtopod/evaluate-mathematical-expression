@@ -54,7 +54,6 @@ namespace reclue {
                 if (!m_expression) {
                     m_expression = new Empty {};
                 }
-                symbolSequence.Shift();
                 return;
             }
 
