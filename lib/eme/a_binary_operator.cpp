@@ -40,9 +40,12 @@ namespace reclue {
 
         if (m_second) {
             m_second->Interpret(symbolSequence);
-            symbolSequence.Shift();
         } else {
             m_second = new Empty {};
+        }
+
+        if (symbol.IsEndScope()) {
+            symbolSequence.Shift();
         }
     }
 

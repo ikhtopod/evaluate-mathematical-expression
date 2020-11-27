@@ -32,9 +32,12 @@ namespace reclue {
 
         if (m_expression) {
             m_expression->Interpret(symbolSequence);
-            symbolSequence.Shift();
         } else {
             m_expression = new Empty {};
+        }
+
+        if (symbol.IsEndScope()) {
+            symbolSequence.Shift();
         }
     }
 

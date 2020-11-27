@@ -62,12 +62,18 @@ namespace reclue {
                 symbol = symbolSequence.GetSymbol();
             } else {
                 m_expression = new Empty {};
+            }
+
+            if (symbol.IsEndScope()) {
                 symbolSequence.Shift();
             }
         }
 
         if (!m_expression) {
             m_expression = new Empty {};
+        }
+
+        if (symbol.IsEndScope()) {
             symbolSequence.Shift();
         }
     }
