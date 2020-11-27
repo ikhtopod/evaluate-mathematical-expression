@@ -15,14 +15,13 @@ namespace reclue {
     Scope::~Scope() { delete m_expression; }
 
     void Scope::Interpret(SymbolSequence& symbolSequence) {
-        Symbol symbol = symbolSequence.GetSymbol();
-
-        if (symbol.IsBeginScope()) {
+        if (symbolSequence.GetSymbol().IsBeginScope()) {
             symbolSequence.Shift();
-            symbol = symbolSequence.GetSymbol();
         }
 
-        IExpression* prevExpression = nullptr;
+        Symbol symbol = symbolSequence.GetSymbol();
+
+        IExpression* prevExpression { nullptr };
         while (!symbol.IsDeadEnd()) {
             prevExpression = m_expression;
 

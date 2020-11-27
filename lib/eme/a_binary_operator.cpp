@@ -20,12 +20,11 @@ namespace reclue {
     }
 
     void ABinaryOperator::Interpret(SymbolSequence& symbolSequence) {
-        Symbol symbol = symbolSequence.GetSymbol();
-
-        if (symbol.IsBinaryOperator(symbolSequence.GetPrevSymbol())) {
+        if (symbolSequence.GetSymbol().IsBinaryOperator(symbolSequence.GetPrevSymbol())) {
             symbolSequence.Shift();
-            symbol = symbolSequence.GetSymbol();
         }
+
+        Symbol symbol = symbolSequence.GetSymbol();
 
         if (!symbol.IsDeadEnd()) {
             if (symbol.IsNumber()) {
