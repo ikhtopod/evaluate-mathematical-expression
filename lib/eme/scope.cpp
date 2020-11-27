@@ -15,7 +15,7 @@ namespace reclue {
     Scope::~Scope() { delete m_expression; }
 
     void Scope::Interpret(SymbolSequence& symbolSequence) {
-        if (symbolSequence.GetSymbol().IsBeginScope()) {
+        if (symbolSequence.GetSymbol().IsBeginScope() && !symbolSequence.IsStartPosition()) {
             symbolSequence.Shift();
         }
 
@@ -49,6 +49,10 @@ namespace reclue {
                     m_expression = binaryOperator;
                 }
             } else if (symbol.IsBeginScope()) {
+                if (symbolSequence.IsStartPosition()) {
+                    symbolSequence.Shift();
+                }
+
                 m_expression = new Scope {};
             } else if (symbol.IsEndScope()) {
                 if (!m_expression) {

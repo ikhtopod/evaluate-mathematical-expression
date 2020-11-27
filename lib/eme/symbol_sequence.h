@@ -24,6 +24,7 @@ namespace reclue {
 
         Symbol GetSymbol() const;
         Symbol GetPrevSymbol() const;
+        bool IsStartPosition() const;
 
         bool Shift();
 

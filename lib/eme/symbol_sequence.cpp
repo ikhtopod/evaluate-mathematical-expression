@@ -29,6 +29,8 @@ namespace reclue {
     Symbol SymbolSequence::GetSymbol() const { return m_currentSymbol; }
     Symbol SymbolSequence::GetPrevSymbol() const { return m_prevSymbol; }
 
+    bool SymbolSequence::IsStartPosition() const { return m_position == 0 && HasNext(); }
+
     bool SymbolSequence::Shift() {
         if (HasNext()) {
             m_prevSymbol = m_currentSymbol;
