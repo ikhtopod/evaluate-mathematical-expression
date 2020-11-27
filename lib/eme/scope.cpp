@@ -51,7 +51,9 @@ namespace reclue {
             } else if (symbol.IsBeginScope()) {
                 m_expression = new Scope {};
             } else if (symbol.IsEndScope()) {
-                m_expression = new Empty {};
+                if (!m_expression) {
+                    m_expression = new Empty {};
+                }
                 symbolSequence.Shift();
                 return;
             }
