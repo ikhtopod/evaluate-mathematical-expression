@@ -12,7 +12,6 @@ namespace reclue {
     private:
         const std::string_view& m_sequence;
         size_t m_position;
-        Symbol m_prevSymbol;
         Symbol m_currentSymbol;
 
     private:
@@ -23,7 +22,6 @@ namespace reclue {
         explicit SymbolSequence(const std::string_view& expression);
 
         Symbol GetSymbol() const;
-        Symbol GetPrevSymbol() const;
         bool IsStartPosition() const;
 
         bool Shift();

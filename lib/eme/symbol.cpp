@@ -44,20 +44,12 @@ namespace reclue {
 
     bool Symbol::IsNegative() const { return m_symbol == '-'; }
 
-    bool Symbol::IsOperator() const {
+    bool Symbol::IsOperator() const { return !IsNumber(); }
+
+    bool Symbol::IsUnaryOperator() const { return IsNegative(); }
+
+    bool Symbol::IsBinaryOperator() const {
         return IsSubtract() || IsAddition() || IsDivide() || IsMultiply();
-    }
-
-    bool Symbol::IsUnaryOperator(const Symbol& prev) const {
-        if (IsNegative()) {
-            return prev.IsOperator() || prev.IsBeginScope() || !prev.IsCorrect();
-        }
-
-        return false;
-    }
-
-    bool Symbol::IsBinaryOperator(const Symbol& prev) const {
-        return IsOperator() && !IsUnaryOperator(prev);
     }
 
     bool Symbol::IsCorrect() const {

@@ -3,8 +3,6 @@
 
 namespace reclue {
 
-    double Negative::Calculate() {
-        return -(m_expression->Calculate());
-    }
+    double Negative::Calculate() const { return -(m_expression->Calculate()); }
 
 }

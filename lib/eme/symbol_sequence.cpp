@@ -21,19 +21,17 @@ namespace reclue {
     }
 
     SymbolSequence::SymbolSequence(const std::string_view& expression) :
-            m_sequence { expression }, m_position { 0 }, m_prevSymbol {},
+            m_sequence { expression }, m_position { 0 },
             m_currentSymbol { HasNext() ? m_sequence[m_position] : Symbol::DEADEND } {
         SkipIncorrectSymbols();
     }
 
     Symbol SymbolSequence::GetSymbol() const { return m_currentSymbol; }
-    Symbol SymbolSequence::GetPrevSymbol() const { return m_prevSymbol; }
 
     bool SymbolSequence::IsStartPosition() const { return m_position == 0 && HasNext(); }
 
     bool SymbolSequence::Shift() {
         if (HasNext()) {
-            m_prevSymbol = m_currentSymbol;
             ++m_position;
             return SkipIncorrectSymbols();
         }

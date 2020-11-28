@@ -1,12 +1,15 @@
 #ifndef EVALUATE_MATHEMATICAL_EXPRESSION_A_OPERATOR_H
 #define EVALUATE_MATHEMATICAL_EXPRESSION_A_OPERATOR_H
 
-#include "i_expression.h"
+#include "a_expression.h"
 
 
 namespace reclue {
 
-    class AOperator : public IExpression {};
+    struct AOperator : public AExpression {
+        virtual void SetExpression(AExpression* expression);
+        virtual void SetExpression(AExpression* first, AExpression* second);
+    };
 
 }
 

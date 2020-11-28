@@ -2,22 +2,20 @@
 #define EVALUATE_MATHEMATICAL_EXPRESSION_A_BINARY_OPERATOR_H
 
 #include "a_operator.h"
-#include "symbol_sequence.h"
 
 
 namespace reclue {
 
     class ABinaryOperator : public AOperator {
     protected:
-        IExpression* m_first;
-        IExpression* m_second;
+        AExpression* m_first;
+        AExpression* m_second;
 
     public:
         ABinaryOperator();
         ~ABinaryOperator() override;
 
-        void SetFirst(IExpression* first);
-        void Interpret(SymbolSequence& symbolSequence) override;
+        void SetExpression(AExpression* first, AExpression* second) override;
     };
 
 }

@@ -3,8 +3,7 @@
 
 namespace reclue {
 
-    double Subtract::Calculate() {
-        return m_first->Calculate() - m_second->Calculate();
-    }
+    EPrecedence Subtract::Precedence() const { return EPrecedence::BINARY_ADDITIVE; }
+    double Subtract::Calculate() const { return m_first->Calculate() - m_second->Calculate(); }
 
 }

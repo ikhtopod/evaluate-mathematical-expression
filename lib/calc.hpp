@@ -1,13 +1,13 @@
 #ifndef EVALUATE_MATHEMATICAL_EXPRESSION_CALC_HPP
 #define EVALUATE_MATHEMATICAL_EXPRESSION_CALC_HPP
 
-#include "eme/mathematical_expression.h"
+#include "eme/calculator.h"
 
 
 namespace reclue {
 
     double calc(const std::string& expression) {
-        return MathematicalExpression { expression }.Evaluate();
+        return Calculator { expression }.Result();
     }
 
 }

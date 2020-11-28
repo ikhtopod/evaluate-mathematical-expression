@@ -42,8 +42,8 @@ namespace reclue {
         bool IsNegative() const;
 
         bool IsOperator() const;
-        bool IsUnaryOperator(const Symbol& prev) const;
-        bool IsBinaryOperator(const Symbol& prev) const;
+        bool IsUnaryOperator() const;
+        bool IsBinaryOperator() const;
 
         bool IsCorrect() const;
     };

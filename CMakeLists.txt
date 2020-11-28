@@ -24,9 +24,8 @@ add_library(symbol STATIC
         lib/eme/symbol_sequence.h lib/eme/symbol_sequence.cpp)
 
 add_library(calc-eme STATIC
-        lib/eme/i_expression.h lib/eme/i_expression.cpp
+        lib/eme/a_expression.h lib/eme/a_expression.cpp
 
-        lib/eme/empty.h lib/eme/empty.cpp
         lib/eme/number.h lib/eme/number.cpp
 
         lib/eme/a_operator.h lib/eme/a_operator.cpp
@@ -42,7 +41,7 @@ add_library(calc-eme STATIC
 
         lib/eme/scope.h lib/eme/scope.cpp
 
-        lib/eme/mathematical_expression.h lib/eme/mathematical_expression.cpp)
+        lib/eme/calculator.h lib/eme/calculator.cpp)
 
 add_executable(evaluate-mathematical-expression main.cpp lib/calc.hpp)
 

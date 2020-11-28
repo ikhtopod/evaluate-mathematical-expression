@@ -1,10 +1,5 @@
 #include "a_binary_operator.h"
 
-#include "empty.h"
-#include "number.h"
-#include "negative.h"
-#include "scope.h"
-
 
 namespace reclue {
 
@@ -15,38 +10,9 @@ namespace reclue {
         delete m_first;
     }
 
-    void ABinaryOperator::SetFirst(IExpression* first) {
-        m_first = first ? first : new Empty {};
-    }
-
-    void ABinaryOperator::Interpret(SymbolSequence& symbolSequence) {
-        if (symbolSequence.GetSymbol().IsBinaryOperator(symbolSequence.GetPrevSymbol())) {
-            symbolSequence.Shift();
-        }
-
-        Symbol symbol = symbolSequence.GetSymbol();
-
-        if (!symbol.IsDeadEnd()) {
-            if (symbol.IsNumber()) {
-                m_second = new Number {};
-            } else if (symbol.IsUnaryOperator(symbolSequence.GetPrevSymbol())) {
-                if (symbol.IsNegative()) {
-                    m_second = new Negative {};
-                }
-            } else if (symbol.IsBeginScope()) {
-                m_second = new Scope {};
-            }
-        }
-
-        if (m_second) {
-            m_second->Interpret(symbolSequence);
-        } else {
-            m_second = new Empty {};
-        }
-
-        if (symbol.IsEndScope()) {
-            symbolSequence.Shift();
-        }
+    void ABinaryOperator::SetExpression(AExpression* first, AExpression* second) {
+        m_first = first;
+        m_second = second;
     }
 
 }

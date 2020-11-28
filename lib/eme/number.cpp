@@ -5,7 +5,14 @@
 
 namespace reclue {
 
-    void Number::Interpret(SymbolSequence& symbolSequence) {
+    Number::Number() : Number { 0.0 } {}
+
+    Number::Number(double value) : m_value { value } {}
+
+    Number::Number(SymbolSequence& symbolSequence) :
+            Number { Number::ExtractNumber(symbolSequence) } {}
+
+    double Number::ExtractNumber(SymbolSequence& symbolSequence) {
         std::string number {};
 
         Symbol symbol = symbolSequence.GetSymbol();
@@ -15,11 +22,10 @@ namespace reclue {
             symbol = symbolSequence.GetSymbol();
         }
 
-        if (!number.empty()) {
-            m_value = std::stod(number);
-        }
+        return !number.empty() ? std::stod(number) : 0.0;
     }
 
-    double Number::Calculate() { return m_value; }
+    EPrecedence Number::Precedence() const { return EPrecedence::NUMBER; }
+    double Number::Calculate() const { return m_value; }
 
 }

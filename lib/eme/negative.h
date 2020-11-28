@@ -7,7 +7,7 @@
 namespace reclue {
 
     struct Negative : public AUnaryOperator {
-        double Calculate() override;
+        double Calculate() const override;
     };
 
 }
