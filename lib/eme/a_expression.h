@@ -1,8 +1,6 @@
 #ifndef EVALUATE_MATHEMATICAL_EXPRESSION_A_EXPRESSION_H
 #define EVALUATE_MATHEMATICAL_EXPRESSION_A_EXPRESSION_H
 
-#include <cstdint>
-#include <memory>
 
 #include "symbol_sequence.h"
 
