@@ -28,8 +28,6 @@ namespace reclue {
 
     Symbol SymbolSequence::GetSymbol() const { return m_currentSymbol; }
 
-    bool SymbolSequence::IsStartPosition() const { return m_position == 0 && HasNext(); }
-
     bool SymbolSequence::Shift() {
         if (HasNext()) {
             ++m_position;

@@ -20,14 +20,11 @@ namespace reclue {
 
         double m_result;
 
-    private:
-        void PushExpression();
-        void PushOperator(AExpression* expression);
-
     public:
         explicit Calculator(const std::string_view& sequence);
 
         double Result();
+        void Push();
     };
 
 }

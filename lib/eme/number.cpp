@@ -25,7 +25,7 @@ namespace reclue {
         return !number.empty() ? std::stod(number) : 0.0;
     }
 
-    EPrecedence Number::Precedence() const { return EPrecedence::NUMBER; }
+    EPrecedence Number::Precedence() const { return EPrecedence::EMPTY; }
     double Number::Calculate() const { return m_value; }
 
 }

@@ -10,8 +10,7 @@
 namespace reclue {
 
     enum class EPrecedence : uint8_t {
-        SCOPE,
-        NUMBER,
+        EMPTY,
         UNARY,
         BINARY_MULTIPLICATIVE,
         BINARY_ADDITIVE,
@@ -23,7 +22,9 @@ namespace reclue {
         virtual EPrecedence Precedence() const = 0;
         virtual double Calculate() const = 0;
 
-        virtual bool operator<(const AExpression& rhs) const;
+        virtual bool HasNoPrecedence() const;
+        virtual bool IsUnaryPrecedence() const;
+        virtual bool operator>=(const AExpression& rhs) const;
     };
 
 

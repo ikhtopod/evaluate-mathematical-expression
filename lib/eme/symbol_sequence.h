@@ -22,7 +22,6 @@ namespace reclue {
         explicit SymbolSequence(const std::string_view& expression);
 
         Symbol GetSymbol() const;
-        bool IsStartPosition() const;
 
         bool Shift();
 

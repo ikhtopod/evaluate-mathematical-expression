@@ -6,18 +6,9 @@
 
 namespace reclue {
 
-    class Scope final : public AOperator {
-    private:
-        AExpression* m_expression;
-
-    public:
-        Scope();
-        ~Scope() override;
-
+    struct Scope final : public AExpression {
         EPrecedence Precedence() const override;
         double Calculate() const override;
-
-        void SetExpression(AExpression* expression) override;
     };
 
 }

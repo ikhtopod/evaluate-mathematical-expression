@@ -3,8 +3,21 @@
 
 namespace reclue {
 
-    bool AExpression::operator<(const AExpression& rhs) const {
-        return rhs.Precedence() < this->Precedence();
+    bool AExpression::HasNoPrecedence() const {
+        return this->Precedence() == EPrecedence::EMPTY;
+    }
+
+    bool AExpression::IsUnaryPrecedence() const {
+        return this->Precedence() == EPrecedence::UNARY;
+    }
+
+    bool AExpression::operator>=(const AExpression& rhs) const {
+        if (rhs.HasNoPrecedence() || HasNoPrecedence() ||
+            (rhs.IsUnaryPrecedence() && this->IsUnaryPrecedence())) {
+            return false;
+        }
+
+        return rhs.Precedence() >= this->Precedence();
     }
 
 }

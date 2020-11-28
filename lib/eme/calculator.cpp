@@ -22,102 +22,91 @@ namespace reclue {
         Symbol symbol = m_symbolSequence.GetSymbol();
 
         while (!symbol.IsDeadEnd()) {
-            AExpression* expression { nullptr };
-
             if (symbol.IsNumber()) {
-                expression = new Number { m_symbolSequence };
-            } else if (symbol.IsOperator()) {
+                m_expressions.push(new Number { m_symbolSequence });
+            } else {
+                if (symbol.IsBeginScope()) {
+                    m_operators.push(new Scope {});
+                } else if (symbol.IsEndScope()) {
 
-                if (symbol.IsUnaryOperator() && isPossibleUnary) {
+                    while (!dynamic_cast<Scope*>(m_operators.top())) {
+                        Push();
+                    }
 
-                    if (symbol.IsNegative()) {
-                        expression = new Negative {};
+                    if (!m_operators.empty()) {
+                        m_operators.pop();
+                    }
+
+                } else if (symbol.IsOperator()) {
+                    AExpression* expression { nullptr };
+
+                    if (symbol.IsUnaryOperator() && isPossibleUnary) {
+
+                        if (symbol.IsNegative()) {
+                            expression = new Negative {};
+                        }
+
+                    } else if (symbol.IsBinaryOperator()) {
+
+                        if (symbol.IsMultiply()) {
+                            expression = new Multiply {};
+                        } else if (symbol.IsDivide()) {
+                            expression = new Divide {};
+                        } else if (symbol.IsAddition()) {
+                            expression = new Addition {};
+                        } else if (symbol.IsSubtract()) {
+                            expression = new Subtract {};
+                        }//fi
                     }//fi
 
-                } else if (symbol.IsBinaryOperator()) {
+                    if (expression) {
+                        while (!m_operators.empty() && *m_operators.top() >= *expression) {
+                            Push();
+                        }
 
-                    if (symbol.IsMultiply()) {
-                        expression = new Multiply {};
-                    } else if (symbol.IsDivide()) {
-                        expression = new Divide {};
-                    } else if (symbol.IsAddition()) {
-                        expression = new Addition {};
-                    } else if (symbol.IsSubtract()) {
-                        expression = new Subtract {};
-                    }//fi
-
-                } else if (symbol.IsBeginScope()) {
-                    expression = new Scope {};
+                        m_operators.push(expression);
+                    }
                 }//fi
 
-            }//fi
-
-            if (expression) {
-                PushOperator(expression);
-            } else {
-                while (!m_operators.empty() && !expression) {
-                    if (m_operators.top()->Precedence() == EPrecedence::SCOPE) {
-                        expression = m_operators.top();
-                        m_operators.pop();
-                    } else {
-                        PushExpression();
-                    }//fi
-                }//elihw
-
-                delete expression;
-                expression = nullptr;
-            }//fi
-
-
-            isPossibleUnary = !isPossibleUnary && (symbol.IsBinaryOperator() || symbol.IsBeginScope());
-            //isPossibleUnary = symbol.IsBinaryOperator() || symbol.IsBeginScope();
-
-            if (expression && (expression->Precedence() != EPrecedence::NUMBER)) {
                 m_symbolSequence.Shift();
-            }//fi
+            }
+
+            isPossibleUnary = symbol.IsBinaryOperator() || symbol.IsUnaryOperator() || symbol.IsBeginScope();
 
             symbol = m_symbolSequence.GetSymbol();
         }//elihw
 
         while (!m_operators.empty()) {
-            PushExpression();
+            Push();
         }//elihw
 
 
         if (!m_expressions.empty()) {
             m_result = m_expressions.top()->Calculate();
         }
+
     }
+    void Calculator::Push() {
+        if (auto* unary = dynamic_cast<AUnaryOperator*>(m_operators.top())) {
+            m_operators.pop();
 
-    void Calculator::PushOperator(AExpression* expression) {
-        if (!expression) return;
-
-        while (!m_operators.empty() && (*expression < *m_operators.top())) {
-            PushExpression();
-        }
-
-        m_operators.push(expression);
-    }
-
-    void Calculator::PushExpression() {
-        if (m_operators.empty()) return;
-
-        AExpression* expression { m_operators.top() };
-        m_operators.pop();
-
-        if (auto* unary = dynamic_cast<AUnaryOperator*>(expression)) {
-            AExpression* first = m_expressions.top();
+            AExpression* expression { m_expressions.top() };
             m_expressions.pop();
-            unary->SetExpression(first);
-        } else if (auto* binary = dynamic_cast<ABinaryOperator*>(expression)) {
-            AExpression* second = m_expressions.top();
+
+            unary->SetExpression(expression);
+            m_expressions.push(unary);
+        } else if (auto* binary = dynamic_cast<ABinaryOperator*>(m_operators.top())) {
+            m_operators.pop();
+
+            AExpression* second { m_expressions.top() };
             m_expressions.pop();
-            AExpression* first = m_expressions.top();
+
+            AExpression* first { m_expressions.top() };
             m_expressions.pop();
+
             binary->SetExpression(first, second);
+            m_expressions.push(binary);
         }
-
-        m_expressions.push(expression);
     }
 
     double Calculator::Result() { return m_result; }
