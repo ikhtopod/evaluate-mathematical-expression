@@ -1,10 +1,13 @@
 #include "calculator.h"
 
-#include <iostream>
+#include <stack>
 
+#include "symbol_sequence.h"
 #include "number.h"
 #include "scope.h"
+#include "a_unary_operator.h"
 #include "negative.h"
+#include "a_binary_operator.h"
 #include "multiply.h"
 #include "divide.h"
 #include "addition.h"
@@ -13,41 +16,69 @@
 
 namespace reclue {
 
-    Calculator::Calculator(const std::string_view& sequence) :
-            m_expressions {}, m_operators {},
-            m_symbolSequence { sequence },
-            m_result { 0.0 } {
+    using StackExpressions = std::stack<AExpression*>;
+
+
+    void PushUnary(AUnaryOperator* unary, StackExpressions& expressions) {
+        AExpression* expression { expressions.top() };
+        expressions.pop();
+
+        unary->SetExpression(expression);
+        expressions.push(unary);
+    }
+
+    void PushBinary(ABinaryOperator* binary, StackExpressions& expressions) {
+        AExpression* second { expressions.top() };
+        expressions.pop();
+
+        AExpression* first { expressions.top() };
+        expressions.pop();
+
+        binary->SetExpression(first, second);
+        expressions.push(binary);
+    }
+
+    void PushOperator(StackExpressions& operators, StackExpressions& expressions) {
+        AExpression* expression { operators.top() };
+        operators.pop();
+
+        if (auto* unary = dynamic_cast<AUnaryOperator*>(expression)) {
+            PushUnary(unary, expressions);
+        } else if (auto* binary = dynamic_cast<ABinaryOperator*>(expression)) {
+            PushBinary(binary, expressions);
+        }
+    }
+
+    AExpression* PolishPotationTree(const std::string_view& sequence) {
+        SymbolSequence symbolSequence { sequence };
+        StackExpressions expressions {};
+        StackExpressions operators {};
 
         bool isPossibleUnary = true;
-        Symbol symbol = m_symbolSequence.GetSymbol();
+        Symbol symbol = symbolSequence.GetSymbol();
 
         while (!symbol.IsDeadEnd()) {
             if (symbol.IsNumber()) {
-                m_expressions.push(new Number { m_symbolSequence });
+                expressions.push(new Number { symbolSequence });
             } else {
                 if (symbol.IsBeginScope()) {
-                    m_operators.push(new Scope {});
+                    operators.push(new Scope {});
                 } else if (symbol.IsEndScope()) {
-
-                    while (!dynamic_cast<Scope*>(m_operators.top())) {
-                        Push();
+                    while (!dynamic_cast<Scope*>(operators.top())) {
+                        PushOperator(operators, expressions);
                     }
 
-                    if (!m_operators.empty()) {
-                        m_operators.pop();
+                    if (!operators.empty()) {
+                        operators.pop();
                     }
-
                 } else if (symbol.IsOperator()) {
                     AExpression* expression { nullptr };
 
                     if (symbol.IsUnaryOperator() && isPossibleUnary) {
-
                         if (symbol.IsNegative()) {
                             expression = new Negative {};
                         }
-
                     } else if (symbol.IsBinaryOperator()) {
-
                         if (symbol.IsMultiply()) {
                             expression = new Multiply {};
                         } else if (symbol.IsDivide()) {
@@ -56,59 +87,41 @@ namespace reclue {
                             expression = new Addition {};
                         } else if (symbol.IsSubtract()) {
                             expression = new Subtract {};
-                        }//fi
-                    }//fi
+                        }
+                    }
 
                     if (expression) {
-                        while (!m_operators.empty() && *m_operators.top() >= *expression) {
-                            Push();
+                        while (!operators.empty() && *operators.top() >= *expression) {
+                            PushOperator(operators, expressions);
                         }
 
-                        m_operators.push(expression);
+                        operators.push(expression);
                     }
-                }//fi
+                }
 
-                m_symbolSequence.Shift();
+                symbolSequence.Shift();
             }
 
             isPossibleUnary = symbol.IsBinaryOperator() || symbol.IsUnaryOperator() || symbol.IsBeginScope();
 
-            symbol = m_symbolSequence.GetSymbol();
-        }//elihw
-
-        while (!m_operators.empty()) {
-            Push();
-        }//elihw
-
-
-        if (!m_expressions.empty()) {
-            m_result = m_expressions.top()->Calculate();
+            symbol = symbolSequence.GetSymbol();
         }
 
-    }
-    void Calculator::Push() {
-        if (auto* unary = dynamic_cast<AUnaryOperator*>(m_operators.top())) {
-            m_operators.pop();
-
-            AExpression* expression { m_expressions.top() };
-            m_expressions.pop();
-
-            unary->SetExpression(expression);
-            m_expressions.push(unary);
-        } else if (auto* binary = dynamic_cast<ABinaryOperator*>(m_operators.top())) {
-            m_operators.pop();
-
-            AExpression* second { m_expressions.top() };
-            m_expressions.pop();
-
-            AExpression* first { m_expressions.top() };
-            m_expressions.pop();
-
-            binary->SetExpression(first, second);
-            m_expressions.push(binary);
+        while (!operators.empty()) {
+            PushOperator(operators, expressions);
         }
+
+        return expressions.empty() ? new Number {} : expressions.top();
     }
+
+
+    Calculator::Calculator(const std::string_view& sequence) :
+            root { PolishPotationTree(sequence) },
+            m_result { root->Calculate() } {}
+
+    Calculator::~Calculator() { delete root; }
 
     double Calculator::Result() { return m_result; }
+
 
 } // namespace reclue

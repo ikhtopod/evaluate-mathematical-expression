@@ -12,7 +12,7 @@ namespace reclue {
     }
 
     bool AExpression::operator>=(const AExpression& rhs) const {
-        if (rhs.HasNoPrecedence() || HasNoPrecedence() ||
+        if (rhs.HasNoPrecedence() || this->HasNoPrecedence() ||
             (rhs.IsUnaryPrecedence() && this->IsUnaryPrecedence())) {
             return false;
         }

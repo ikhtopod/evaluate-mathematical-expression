@@ -7,7 +7,7 @@
 namespace reclue {
 
     double calc(const std::string& expression) {
-        return Calculator { expression }.Result();
+        return Calculator(expression).Result();
     }
 
 }
