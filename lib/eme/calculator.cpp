@@ -1,9 +1,7 @@
 #include "calculator.h"
 
 #include <iostream>
-#include <stack>
 
-#include "a_expression.h"
 #include "number.h"
 #include "scope.h"
 #include "negative.h"
@@ -16,90 +14,110 @@
 namespace reclue {
 
     Calculator::Calculator(const std::string_view& sequence) :
+            m_expressions {}, m_operators {},
+            m_symbolSequence { sequence },
             m_result { 0.0 } {
 
-        std::stack<AExpression*> expressions {};
-        AExpression* root { nullptr };
+        bool isPossibleUnary = true;
+        Symbol symbol = m_symbolSequence.GetSymbol();
 
-        {
-            SymbolSequence symbolSequence { sequence };
-            std::stack<AExpression*> operators {};
+        while (!symbol.IsDeadEnd()) {
+            AExpression* expression { nullptr };
 
-            bool isPossibleUnary = true;
-            Symbol symbol = symbolSequence.GetSymbol();
-            bool shifted = false;
+            if (symbol.IsNumber()) {
+                expression = new Number { m_symbolSequence };
+            } else if (symbol.IsOperator()) {
 
-            while (!symbol.IsDeadEnd()) {
-                AExpression* expression { nullptr };
+                if (symbol.IsUnaryOperator() && isPossibleUnary) {
 
-                if (symbol.IsNumber()) {
-                    shifted = true;
-                    expression = new Number { symbolSequence };
-                } else if (symbol.IsOperator()) {
-                    shifted = false;
-
-                    if (symbol.IsUnaryOperator() && isPossibleUnary) {
-
-                        if (symbol.IsNegative()) {
-                            expression = new Negative {};
-                        }//fi
-
-                    } else if (symbol.IsBinaryOperator()) {
-
-                        if (symbol.IsMultiply()) {
-                            expression = new Multiply {};
-                        } else if (symbol.IsDivide()) {
-                            expression = new Divide {};
-                        } else if (symbol.IsAddition()) {
-                            expression = new Addition {};
-                        } else if (symbol.IsSubtract()) {
-                            expression = new Subtract {};
-                        }//fi
-
-                    } else if (symbol.IsBeginScope()) {
-                        expression = new Scope {};
+                    if (symbol.IsNegative()) {
+                        expression = new Negative {};
                     }//fi
 
+                } else if (symbol.IsBinaryOperator()) {
+
+                    if (symbol.IsMultiply()) {
+                        expression = new Multiply {};
+                    } else if (symbol.IsDivide()) {
+                        expression = new Divide {};
+                    } else if (symbol.IsAddition()) {
+                        expression = new Addition {};
+                    } else if (symbol.IsSubtract()) {
+                        expression = new Subtract {};
+                    }//fi
+
+                } else if (symbol.IsBeginScope()) {
+                    expression = new Scope {};
                 }//fi
 
+            }//fi
 
-                if (expression) {
-                    while (!operators.empty() && *expression < *operators.top()) {
-                        expressions.push(operators.top());
-                        operators.pop();
-                    }
-                    operators.push(expression);
-                } else {
-                    // Если expression == nullptr, то скорее всего это закрывающая скобка, поэтому
-                    // нужно вытолкнуть все из operators в expressions до первой попавшейся скобки
-                    while (!operators.empty() && !expression) {
-                        expression = dynamic_cast<Scope*>(operators.top());
+            if (expression) {
+                PushOperator(expression);
+            } else {
+                while (!m_operators.empty() && !expression) {
+                    if (m_operators.top()->Precedence() == EPrecedence::SCOPE) {
+                        expression = m_operators.top();
+                        m_operators.pop();
+                    } else {
+                        PushExpression();
+                    }//fi
+                }//elihw
 
-                        if (!expression) {
-                            expressions.push(operators.top());
-                            operators.pop();
-                        }
-                    }
-
-                    delete expression;
-                }
-
-                isPossibleUnary = !isPossibleUnary && (symbol.IsBinaryOperator() || symbol.IsBeginScope());
-
-                if (!shifted) symbolSequence.Shift();
-                symbol = symbolSequence.GetSymbol();
-            }//elihw
-
-            while (!operators.empty()) {
-                expressions.push(operators.top());
-                operators.pop();
-            }//elihw
-        }//scope filed expressions
+                delete expression;
+                expression = nullptr;
+            }//fi
 
 
-        if (root) m_result = root->Calculate();
+            isPossibleUnary = !isPossibleUnary && (symbol.IsBinaryOperator() || symbol.IsBeginScope());
+            //isPossibleUnary = symbol.IsBinaryOperator() || symbol.IsBeginScope();
 
-        delete root;
+            if (expression && (expression->Precedence() != EPrecedence::NUMBER)) {
+                m_symbolSequence.Shift();
+            }//fi
+
+            symbol = m_symbolSequence.GetSymbol();
+        }//elihw
+
+        while (!m_operators.empty()) {
+            PushExpression();
+        }//elihw
+
+
+        if (!m_expressions.empty()) {
+            m_result = m_expressions.top()->Calculate();
+        }
+    }
+
+    void Calculator::PushOperator(AExpression* expression) {
+        if (!expression) return;
+
+        while (!m_operators.empty() && (*expression < *m_operators.top())) {
+            PushExpression();
+        }
+
+        m_operators.push(expression);
+    }
+
+    void Calculator::PushExpression() {
+        if (m_operators.empty()) return;
+
+        AExpression* expression { m_operators.top() };
+        m_operators.pop();
+
+        if (auto* unary = dynamic_cast<AUnaryOperator*>(expression)) {
+            AExpression* first = m_expressions.top();
+            m_expressions.pop();
+            unary->SetExpression(first);
+        } else if (auto* binary = dynamic_cast<ABinaryOperator*>(expression)) {
+            AExpression* second = m_expressions.top();
+            m_expressions.pop();
+            AExpression* first = m_expressions.top();
+            m_expressions.pop();
+            binary->SetExpression(first, second);
+        }
+
+        m_expressions.push(expression);
     }
 
     double Calculator::Result() { return m_result; }

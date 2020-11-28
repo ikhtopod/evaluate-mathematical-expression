@@ -4,7 +4,7 @@
 namespace reclue {
 
     bool AExpression::operator<(const AExpression& rhs) const {
-        return this->Precedence() < rhs.Precedence();
+        return rhs.Precedence() < this->Precedence();
     }
 
 }
