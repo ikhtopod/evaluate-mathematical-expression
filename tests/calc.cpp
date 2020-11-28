@@ -46,6 +46,8 @@ TEST(calc, UnaryTests) {
     ASSERT_DOUBLE_EQ(-12.0, calc("-2 + -10"));
 
     ASSERT_DOUBLE_EQ(8.0, calc("-2 + --10"));
+
+    ASSERT_DOUBLE_EQ(-5.0, calc("10 / -2"));
 }
 
 TEST(calc, UnaryAndScopeTests) {
@@ -105,8 +107,8 @@ TEST(calc, UnaryOperator) {
 TEST(calc, DivideByZero) {
     ASSERT_DOUBLE_EQ(0.0, calc("2 / 0.0"));
     ASSERT_DOUBLE_EQ(0.0, calc("2 / (3.0 - 3)"));
-    ASSERT_DOUBLE_EQ(0.0, calc("2 / (-5 -5)"));
-    ASSERT_DOUBLE_EQ(0.0, calc("2 / (-5 + -5)"));
+    ASSERT_DOUBLE_EQ(0.0, calc("2 / (5 -5)"));
+    ASSERT_DOUBLE_EQ(0.0, calc("2 / (5 + -5)"));
     ASSERT_DOUBLE_EQ(0.0, calc("2 / (-5 + --5)"));
 }
 
@@ -171,27 +173,10 @@ TEST(calc, ComplexExamples) {
     ASSERT_DOUBLE_EQ(((2.0 / (2.0 + 3.33) * 4.0) - -6.0), calc("(2 / (2 + 3.33) * 4) - -6"));
 }
 
-/*TEST(calc, CrackTests) {
-    //ASSERT_NO_FATAL_FAILURE(calc("10 * ("));
-    //ASSERT_NO_FATAL_FAILURE(calc(") * 10"));
-    //ASSERT_NO_FATAL_FAILURE(calc(" ( 10 *  ) ) "));
-    //ASSERT_NO_FATAL_FAILURE(calc("10 * ()"));
-    //ASSERT_NO_FATAL_FAILURE(calc("() * 10"));
-    //ASSERT_NO_FATAL_FAILURE(calc(" ( 10 * ( ) ) "));
-
-    //ASSERT_DOUBLE_EQ(0.0, calc("10 * ("));
-    //ASSERT_DOUBLE_EQ(0.0, calc(") * 10"));
-    //ASSERT_DOUBLE_EQ(0.0, calc(" ( 10 *  ) ) "));
-    //ASSERT_DOUBLE_EQ(0.0, calc("10 * ()"));
-    //ASSERT_DOUBLE_EQ(0.0, calc("() * 10"));
-    //ASSERT_DOUBLE_EQ(0.0, calc(" ( 10 * ( ) ) "));
-
-    //ASSERT_DOUBLE_EQ(0.0, calc("*"));
-    //ASSERT_DOUBLE_EQ(0.0, calc(" -"));
-    //ASSERT_DOUBLE_EQ(0.0, calc("+ "));
-    //ASSERT_DOUBLE_EQ(0.0, calc(" / "));
-    //ASSERT_DOUBLE_EQ(0.0, calc("() * "));
-}*/
+TEST(calc, MoreTests) {
+    ASSERT_DOUBLE_EQ(-6221.0, calc("81-16+26-6255-57"));
+    ASSERT_DOUBLE_EQ(-6733.0, calc("(-6)+(18+27/-1*(37))+(-96*-1*(((-1*(54+6))))--14)"));
+}
 
 
 int main(int argc, char** argv) {

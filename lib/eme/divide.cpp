@@ -1,6 +1,7 @@
 #include "divide.h"
 
 #include <limits>
+#include <cmath>
 
 
 namespace reclue {
@@ -10,7 +11,7 @@ namespace reclue {
     double Divide::Calculate() const {
         double first { m_first->Calculate() };
         double second { m_second->Calculate() };
-        return second > std::numeric_limits<double>::min() ? first / second : 0.0;
+        return (std::abs(second) > std::numeric_limits<double>::min()) ? (first / second) : 0.0;
     }
 
 }
