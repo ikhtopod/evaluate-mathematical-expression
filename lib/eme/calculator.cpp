@@ -69,7 +69,9 @@ namespace reclue {
                     }
 
                     if (!operators.empty()) {
+                        AExpression* scope = operators.top();
                         operators.pop();
+                        delete scope;
                     }
                 } else if (symbol.IsOperator()) {
                     AExpression* expression { nullptr };
