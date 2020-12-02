@@ -4,9 +4,12 @@ foreach (case_file ${test_cases})
     set(case_name tests_${case_name})
 
     add_executable(${case_name} ${case_file})
+    target_include_directories(${case_name} PRIVATE ../lib
+            ../thirdparty/googletest/googletest/include
+            ../thirdparty/googletest/googlemock/include)
 
     target_link_libraries(${case_name} ${LINK_LIBS}
-            calc-eme symbol
+            ${CALCEME_LIB} ${SYMBOL_LIB}
             gtest gtest_main gmock gmock_main pthread)
 
     add_test(NAME ${case_name}

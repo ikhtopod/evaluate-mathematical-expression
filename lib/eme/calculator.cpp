@@ -2,7 +2,7 @@
 
 #include <stack>
 
-#include "symbol_sequence.h"
+#include "symbol/symbol_sequence.h"
 #include "number.h"
 #include "scope.h"
 #include "a_unary_operator.h"

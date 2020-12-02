@@ -2,7 +2,7 @@
 #define EVALUATE_MATHEMATICAL_EXPRESSION_NUMBER_H
 
 #include "a_expression.h"
-#include "symbol_sequence.h"
+#include "symbol/symbol_sequence.h"
 
 
 namespace reclue {
