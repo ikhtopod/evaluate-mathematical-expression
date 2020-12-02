@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.17)
+cmake_minimum_required(VERSION 3.16)
 project(evaluate-mathematical-expression LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -6,9 +6,15 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(GCC_COVERAGE_COMPILE_FLAGS "-Wall -Wextra -Werror -Wconversion -pedantic")
+#set(GCC_COVERAGE_COMPILE_FLAGS "-Wall -Wextra -Werror -Wconversion -pedantic")
 #set(GCC_COVERAGE_COMPILE_FLAGS "-Wall -Wextra -Wconversion -pedantic")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
+
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+    add_definitions(-Wall -Wextra -Werror -Wconversion -pedantic -O2 -flto -Wl,--strip-all)
+else()
+    add_definitions(-Wall -Wextra -Werror -Wconversion -pedantic)
+endif()
 
 include_directories(lib)
 
