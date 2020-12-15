@@ -49,7 +49,7 @@ namespace reclue {
         }
     }
 
-    AExpression* PolishPotationTree(const std::string_view& sequence) {
+    AExpression* PolishNotationTree(const std::string_view& sequence) {
         SymbolSequence symbolSequence { sequence };
         StackExpressions expressions {};
         StackExpressions operators {};
@@ -118,7 +118,7 @@ namespace reclue {
 
 
     Calculator::Calculator(const std::string_view& sequence) :
-            root { PolishPotationTree(sequence) },
+            root { PolishNotationTree(sequence) },
             m_result { root->Calculate() } {}
 
     Calculator::~Calculator() { delete root; }
